@@ -1,7 +1,7 @@
 import { describe, test } from 'node:test';
 import assert from 'node:assert';
 
-// 🚀 RUTAS CORREGIDAS AL 100% SEGÚN TU ÁRBOL DE CARPETAS
+// RUTAS CORREGIDAS AL 100% SEGÚN TU ÁRBOL DE CARPETAS
 import { Book } from '../src/models/Books.js';
 import { Loan } from '../src/models/Loan.js';
 import { UserAdapter } from '../src/models/UserAdapter.js';
