@@ -12,7 +12,8 @@ export class UserAdapter {
             id: parseInt(idPart.trim()),
             firstName: firstName.trim(),
             lastName: lastName.trim(),
-            fullName: ${firstName.trim()} ${lastName.trim()}
+            fullName: `${firstName.trim()} ${lastName.trim()}`
         };
     }
+    
 }
