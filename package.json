@@ -4,7 +4,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "node --test tests/library.test.js"
+    "test": "node --test src/tests/library.test.js"
   },
   "keywords": [],
   "author": "",
