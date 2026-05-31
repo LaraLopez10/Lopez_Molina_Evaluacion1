@@ -15,4 +15,5 @@ export class UserAdapter {
             fullName: ${firstName.trim()} ${lastName.trim()}
         };
     }
+    
 }
