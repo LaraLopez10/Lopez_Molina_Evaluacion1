@@ -3,8 +3,8 @@
 # 📚 Sistema Biblioteca MVP
 Proyecto desarrollado para la materia Programación.
 ## 👥 Integrantes
-- Lara Molina
-- [Nombre de tu compañera]
+- Lara Lopez
+- Alexandra Molina
 ---
 # 📌 Descripción
 Sistema de gestión de biblioteca desarrollado bajo la arquitectura MVC.
@@ -206,8 +206,6 @@ Evaluacion1_Lopez_Molina
 
 El proyecto cumple con los requisitos solicitados para el MVP de Biblioteca, implementando arquitectura MVC, patrones de diseño, persistencia de datos en MySQL y pruebas unitarias para la validación de la lógica de negocio.
 
-Además, si tu profesor pidió **"Fuentes / Recursos / Documentación"**, agregá al final esta sección:
-```md
 # 📚 Fuentes / Recursos / Documentación
 ## Documentación Oficial
 - https://nodejs.org/docs
