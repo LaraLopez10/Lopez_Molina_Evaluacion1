@@ -89,12 +89,6 @@ libros.forEach(l => {
           Prestar Libro
         </button>
 
-        <button
-          class="btn btn-success btn-sm mt-2"
-          onclick="irDevolucion(${l.id})">
-          Devolver Libro
-        </button>
-
       </div>
 
     </div>
