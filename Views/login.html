@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Biblioteca</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container">
+
+    <div class="row justify-content-center mt-5">
+
+        <div class="col-md-5">
+
+            <div class="card shadow">
+
+                <div class="card-header text-center">
+                    <h2> Biblioteca Virtual</h2>
+                </div>
+
+                <div class="card-body">
+
+                    <h4 class="mb-3">Iniciar Sesión</h4>
+
+                    <form onsubmit="irAlIndex(event)">
+
+                        <input
+                            type="text"
+                            class="form-control mb-3"
+                            placeholder="Usuario"
+                            required>
+
+                        <input
+                            type="password"
+                            class="form-control mb-3"
+                            placeholder="Contraseña"
+                            required>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100">
+                            Iniciar Sesión
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function irAlIndex(event) {
+    event.preventDefault();
+    window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
