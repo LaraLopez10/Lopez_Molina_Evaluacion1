@@ -1,7 +1,18 @@
 {
+  "name": "biblioteca-mvp",
+  "version": "1.0.0",
+  "description": "Sistema Biblioteca MVP",
+  "main": "backend.js",
+  "scripts": {
+    "start": "node backend.js",
+    "test": "jest"
+  },
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mysql2": "^3.22.4"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.4"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2"
   }
 }
