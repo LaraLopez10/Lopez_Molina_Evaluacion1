@@ -1,98 +1,235 @@
-# Sistema de Gestión de Biblioteca MVP 
 
-Este proyecto es un Producto Mínimo Viable (MVP) para la gestión automatizada de préstamos en una biblioteca, desarrollado bajo una arquitectura robusta y desacoplada que conecta una interfaz web moderna con un motor de base de datos relacional.
 
+# 📚 Sistema Biblioteca MVP
+Proyecto desarrollado para la materia Programación.
+## 👥 Integrantes
+- Lara Molina
+- [Nombre de tu compañera]
 ---
-
-## Diagrama de Arquitectura (MVC)
-
-El sistema implementa de forma estricta el patrón arquitectónico *Modelo-Vista-Controlador (MVC)*, garantizando que la lógica de negocio, la persistencia de datos y la interfaz de usuario no se mezclen.
-
-
+# 📌 Descripción
+Sistema de gestión de biblioteca desarrollado bajo la arquitectura MVC.
+Permite:
+- Iniciar sesión
+- Registrar usuarios
+- Visualizar libros
+- Buscar libros por ID
+- Agregar libros
+- Modificar libros
+- Eliminar libros
+- Registrar préstamos
+- Actualizar stock automáticamente
+- Gestionar distintos tipos de préstamo
 ---
-
-┌─────────────────────────────────────────────────────────┐
-   │                       VISTA (UI)                        │
-   │  • Interfaz HTML5 / CSS3 (Vibrante)                     │
-   │  • Captura eventos del usuario (Clicks, Login, Select)   │
-   └───────────────────────────┬─────────────────────────────┘
-                               │  (Eventos / Inputs)
-                               ▼
-   ┌─────────────────────────────────────────────────────────┐
-   │                   CONTROLADOR (JS)                      │
-   │  • LibraryController.js (Orquestador de la UI)          │
-   │  • Maneja estados internos (currentUser, apiUrl)        │
-   │  • Consume endpoints asíncronos mediante fetch()        │
-   └───────────────────────────┬─────────────────────────────┘
-                               │  (Peticiones HTTP: GET / POST)
-                               ▼
-   ┌─────────────────────────────────────────────────────────┐
-   │                   API BACKEND & MODELO                  │
-   │  • server.js (Express API)                              │
-   │  • Acceso Nativo a Datos (msnodesqlv8)                  │
-   │  • Motor Base de Datos SQL Server (BibliotecaDB)         │
-   └─────────────────────────────────────────────────────────┘
-
-
-   ---
-
-
-   ### Explicación de Componentes:
-* **Modelo (Model):** Representado por la base de datos SQL Server (`Libros` y `Prestamos`) y los servicios intermedios de Node.js que moldean, validan y formatean la información (como transformar los bits `1/0` de SQL en booleanos legibles de JavaScript).
-* **Vista (View):** El ecosistema del Frontend (HTML/CSS) encargado exclusivamente de renderizar los elementos interactivos, alertas dinámicas de estado y los badges de disponibilidad de inventario.
-* **Controlador (Controller):** Encarnado en `LibraryController.js`. Es el cerebro intermediario; escucha las acciones de la vista, invoca la conversión de datos y gatilla las actualizaciones asíncronas (`updateView`) hacia la API.
-
+# 🏗 Arquitectura MVC
+El proyecto implementa el patrón MVC (Model - View - Controller).
+## Model
+Encargado de la lógica de negocio y acceso a datos.
+Componentes:
+- Base de datos MySQL
+- Strategy
+- Adapter
+- Singleton
+## View
+Interfaz de usuario desarrollada con:
+- HTML
+- CSS
+- Bootstrap
+- JavaScript
+Archivos:
+- login.html
+- Index.html
+- prestamo.html
+## Controller
+Intermediario entre la vista y el modelo.
+Archivo:
+- BibliotecaControllers.js
 ---
-
-##  Justificación de Patrones de Diseño
-
-Para resolver problemas específicos de compatibilidad de sistemas antiguos y escalabilidad de reglas de negocio, se implementaron los siguientes patrones del catálogo GoF (*Gang of Four*):
-
-### 1. Patrón Estructural: Adapter (Adaptador)
-* **Problema específico:** El sistema requería procesar credenciales de usuarios provenientes de un sistema de texto antiguo (*Legacy*) formateado estrictamente como un String estructurado (`ID_Apellido, Nombre`), pero el sistema moderno de JavaScript necesita operar con objetos estructurados ricos.
-* **Solución en código:** `UserAdapter.adaptLegacyUser(legacyString)` intercepta la cadena de texto vieja, valida sus componentes por expresiones regulares, descompone las propiedades y modela un objeto de usuario compatible con la nueva arquitectura sin modificar la infraestructura antigua.
-
-### 2. Patrón Estructural: Decorator (Decorador)
-* **Problema específico:** Las reglas de negocio de los préstamos varían dinámicamente según el tipo de cliente (Común o Premium). Agregar estas propiedades directamente alterando los objetos base generaría un código rígido y violaría el principio de Responsabilidad Única.
-* **Solución en código:** Se utiliza la lógica del Decorador para extender las funcionalidades del préstamo en tiempo de ejecución. Al interceptar si el préstamo es Premium, se altera dinámicamente la duración del beneficio (extendiendo de 7 a 15 días) y se añade una funcionalidad extra (como la futura generación adjunta de comprobantes en PDF), encapsulando el comportamiento extendido de forma limpia.
-
+# 🎯 Patrones de Diseño Implementados
+## Singleton
+Archivo:
+db.js
+Objetivo:
+Garantizar una única conexión a la base de datos MySQL durante toda la ejecución de la aplicación.
 ---
+## Strategy
+Archivos:
+- prestamoBasico.js
+- prestamoPremium.js
+Objetivo:
+Permitir cambiar dinámicamente la lógica de préstamo según el tipo seleccionado.
+### Préstamo Básico
+- Duración: 7 días
+### Préstamo Premium
+- Duración: 30 días
+---
+## Adapter
+Archivo:
+adapterPrestamo.js
+Objetivo:
+Adaptar los datos del objeto Libro al formato requerido por el módulo de préstamos.
+---
+# 🛠 Tecnologías Utilizadas
+## Backend
+- Node.js
+- Express
+- MySQL2
+- CORS
+## Frontend
+- HTML5
+- CSS3
+- Bootstrap 5
+- JavaScript
+## Base de Datos
+- MySQL
+- XAMPP
+## Testing
+- Jest
+---
+# 🗄 Base de Datos
+Nombre:
+biblioteca_mvp
+## Tabla Libros
+| Campo | Tipo |
+|---------|---------|
+| id | INT |
+| titulo | VARCHAR |
+| autor | VARCHAR |
+| stock | INT |
+## Tabla Usuarios
+| Campo | Tipo |
+|---------|---------|
+| id | INT |
+| usuario | VARCHAR |
+| password | VARCHAR |
+## Tabla Prestamos
+| Campo | Tipo |
+|---------|---------|
+| id | INT |
+| libro_id | INT |
+| usuario_id | INT |
+| fecha_prestamo | DATETIME |
+| fecha_devolucion | DATETIME |
+| estado | VARCHAR |
+| tipo | VARCHAR |
+---
+# 🚀 Instalación
+## 1. Clonar repositorio
+```bash
+git clone URL_DEL_REPOSITORIO
 
-##  Instrucciones de Ejecución
+2. Instalar dependencias
 
-### Requisitos Previos
-* **Node.js** (Versión 16 o superior)
-* **SQL Server** con la base de datos `BibliotecaDB` creada y activa.
-* **ODBC Driver 17 para SQL Server** instalado en el sistema operativo Windows.
-
-### 1. Configuración de la Base de Datos
-Asegúrese de poseer las siguientes tablas en su instancia local `SQLEXPRESS` con stock de libros habilitado (`disponible = 1`):
-```sql
--- Reseteo rápido de stock de prueba
-UPDATE Libros SET disponible = 1;
-2. Levantar el Backend (API)
-Abra la terminal en la carpeta raíz del proyecto backend.
-
-Instale las dependencias necesarias:
-
-Bash
 npm install
-Inicie el servidor de desarrollo nativo de Node:
 
-Bash
-node server.js
-Debería ver el mensaje:  Servidor API Nativo corriendo en http://localhost:3000
+3. Configurar base de datos
 
-3. Levantar el Frontend (Interfaz)
-Utilice la extensión Live Server de VS Code sobre el archivo index.html para levantar la interfaz cliente en su entorno local de navegador web.
+Crear la base:
 
+CREATE DATABASE biblioteca_mvp;
 
-Pruebas Unitarias
-El proyecto cuenta con una suite de tests estructurada para validar que las reglas críticas de negocio (como el procesamiento del Adaptador de texto o las extensiones del Decorador) respondan consistentemente bajo cualquier escenario.
+Importar las tablas correspondientes.
 
-Ejecución de los Tests
-Para correr las pruebas estructuradas y verificar la salud del código, ejecute el siguiente comando en la terminal:
+4. Ejecutar servidor
 
-Bash
+node backend.js
+
+⸻
+
+🌐 Acceso
+
+Abrir en navegador:
+
+http://localhost:3000
+
+⸻
+
+🧪 Testing
+
+Para ejecutar las pruebas unitarias:
+
 npm test
-Si todo está correcto, la consola imprimirá el reporte detallando que las transformaciones de cadenas heredadas y la asignación diferencial de días de préstamos pasaron exitosamente todas las aserciones.
+
+Pruebas realizadas:
+
+* PrestamoBasico
+* PrestamoPremium
+* LibroAdapter
+* Validación de adaptación de objetos
+
+⸻
+
+📂 Estructura del Proyecto
+
+Evaluacion1_Lopez_Molina
+│
+├── backend.js
+├── db.js
+├── package.json
+│
+├── controller
+│   └── BibliotecaControllers.js
+│
+├── models
+│   └── estrategias
+│       ├── adapterPrestamo.js
+│       ├── prestamoBasico.js
+│       └── prestamoPremium.js
+│
+├── Views
+│   ├── login.html
+│   ├── Index.html
+│   ├── prestamo.html
+│   ├── funciones.js
+│   └── style.css
+│
+└── test
+    └── biblioteca.test.js
+
+⸻
+
+✅ Funcionalidades Implementadas
+
+* Login
+* Registro
+* CRUD de libros
+* Préstamos
+* Actualización automática de stock
+* MVC
+* Singleton
+* Strategy
+* Adapter
+* Testing Unitario
+
+⸻
+
+📖 Conclusión
+
+El proyecto cumple con los requisitos solicitados para el MVP de Biblioteca, implementando arquitectura MVC, patrones de diseño, persistencia de datos en MySQL y pruebas unitarias para la validación de la lógica de negocio.
+
+Además, si tu profesor pidió **"Fuentes / Recursos / Documentación"**, agregá al final esta sección:
+```md
+# 📚 Fuentes / Recursos / Documentación
+## Documentación Oficial
+- https://nodejs.org/docs
+- https://expressjs.com
+- https://dev.mysql.com/doc
+- https://jestjs.io/docs/getting-started
+- https://getbootstrap.com/docs/5.3
+## Herramientas Utilizadas
+- Visual Studio Code
+- Node.js
+- MySQL
+- XAMPP
+- Git
+- GitHub
+## Recursos Consultados
+- Documentación oficial de Express
+- Documentación oficial de MySQL2
+- Documentación oficial de Jest
+- Bootstrap Documentation
+## Frameworks y Librerías
+- Express
+- MySQL2
+- Jest
+- Bootstrap
+
