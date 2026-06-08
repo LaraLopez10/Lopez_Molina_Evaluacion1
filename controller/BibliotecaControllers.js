@@ -204,45 +204,6 @@ exports.login = (req, res) => {
 };
 
 /* =========================
-   REGISTER
-========================= */
-
-exports.register = (req, res) => {
-
-    const {
-        usuario,
-        password
-    } = req.body;
-
-    db.query(
-        `
-        INSERT INTO usuarios
-        (usuario,password)
-        VALUES (?,?)
-        `,
-        [usuario, password],
-        (err) => {
-
-            if (err) {
-
-                return res.status(500).json({
-                    mensaje:
-                    'El usuario ya existe'
-                });
-
-            }
-
-            res.json({
-                mensaje:
-                'Usuario registrado'
-            });
-
-        }
-    );
-
-};
-
-/* =========================
    PRESTAMOS
 ========================= */
 
