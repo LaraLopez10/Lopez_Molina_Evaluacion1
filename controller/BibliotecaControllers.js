@@ -1,3 +1,5 @@
+//BIBLIOTECACONTROLLER.JS
+
 const db = require('../db');
 
 /* =========================
@@ -247,13 +249,13 @@ exports.register = (req, res) => {
 exports.crearPrestamo = (req, res) => {
 
     const {
-        libro_id,
-        usuario_id,
-        fecha_prestamo,
-        fecha_devolucion,
-        estado,
-        tipo
-    } = req.body;
+    libro_id,
+    nombre_persona,
+    fecha_prestamo,
+    fecha_devolucion,
+    estado,
+    tipo
+} = req.body;
 
     db.query(
         'SELECT * FROM libros WHERE id = ?',
@@ -288,25 +290,25 @@ exports.crearPrestamo = (req, res) => {
 
             db.query(
                 `
-                INSERT INTO prestamos
+            INSERT INTO prestamos
                 (
-                    libro_id,
-                    usuario_id,
-                    fecha_prestamo,
-                    fecha_devolucion,
-                    estado,
-                    tipo
-                )
-                VALUES (?, ?, ?, ?, ?, ?)
+                libro_id,
+                nombre_persona,
+                fecha_prestamo,
+                fecha_devolucion,
+                estado,
+                tipo
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
                 `,
                 [
-                    libro_id,
-                    usuario_id,
-                    fecha_prestamo,
-                    fecha_devolucion,
-                    estado,
-                    tipo
-                ],
+    libro_id,
+    nombre_persona,
+    fecha_prestamo,
+    fecha_devolucion,
+    estado,
+    tipo
+],
                 (err) => {
 
                     if (err) {
@@ -337,6 +339,118 @@ exports.crearPrestamo = (req, res) => {
                             res.json({
                                 mensaje:
                                 'Préstamo realizado con éxito'
+                            });
+
+                        }
+                    );
+
+                }
+            );
+
+        }
+    );
+
+};
+
+exports.getPrestamos = (req,res)=>{
+
+    db.query(
+        `
+        SELECT
+            p.id,
+            p.libro_id,
+            p.nombre_persona,
+            p.fecha_prestamo,
+            p.fecha_devolucion,
+            p.estado,
+            p.tipo,
+            l.titulo,
+            l.autor
+        FROM prestamos p
+        INNER JOIN libros l
+            ON p.libro_id = l.id
+        WHERE p.estado='prestado'
+        `,
+        (err,resultados)=>{
+
+            if(err){
+
+                return res.status(500).json({
+                    error: err.message
+                });
+
+            }
+
+            res.json(resultados);
+
+        }
+    );
+
+};
+
+exports.devolverPrestamo = (req, res) => {
+
+    const { libroId } = req.params;
+
+    db.query(
+        `
+        SELECT *
+        FROM prestamos
+        WHERE libro_id = ?
+        AND estado = 'prestado'
+        ORDER BY id DESC
+        LIMIT 1
+        `,
+        [libroId],
+        (err, resultado) => {
+
+            if (err) {
+                return res.status(500).json({
+                    error: err.message
+                });
+            }
+
+            if (resultado.length === 0) {
+                return res.status(404).json({
+                    mensaje: 'No hay préstamos activos'
+                });
+            }
+
+            const prestamoId = resultado[0].id;
+
+            db.query(
+                `
+                UPDATE prestamos
+                SET estado = 'devuelto'
+                WHERE id = ?
+                `,
+                [prestamoId],
+                (err) => {
+
+                    if (err) {
+                        return res.status(500).json({
+                            error: err.message
+                        });
+                    }
+
+                    db.query(
+                        `
+                        UPDATE libros
+                        SET stock = stock + 1
+                        WHERE id = ?
+                        `,
+                        [libroId],
+                        (err) => {
+
+                            if (err) {
+                                return res.status(500).json({
+                                    error: err.message
+                                });
+                            }
+
+                            res.json({
+                                mensaje:
+                                'Libro devuelto correctamente'
                             });
 
                         }
