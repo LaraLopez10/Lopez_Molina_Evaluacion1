@@ -1,3 +1,5 @@
+//FUNCIONES.JS
+
 const API = "http://localhost:3000/libros";
 
 // POST
@@ -88,6 +90,7 @@ libros.forEach(l => {
           onclick="irAPrestamo(${l.id})">
           Prestar Libro
         </button>
+
 
       </div>
 
@@ -246,12 +249,9 @@ async function login(event) {
         }
 
         localStorage.setItem(
-    "usuario",
-    JSON.stringify({
-        id: data.id,
-        usuario: data.usuario
-    })
-);
+            "usuario",
+            data.usuario
+        );
 
         window.location.href = "index.html";
 
@@ -333,20 +333,20 @@ async function confirmarPrestamo() {
         return;
     }
 
-    const usuarioLogueado = JSON.parse(
-    localStorage.getItem("usuario")
-);
+    const nombre_persona =
+        document.getElementById(
+        "nombre_persona"
+        ).value;
 
-if (!usuarioLogueado) {
+    if (!nombre_persona) {
 
-    alert("Debe iniciar sesión");
-
-    window.location.href = "login.html";
+    alert(
+        "Ingrese el nombre de la persona"
+    );
 
     return;
-}
 
-const usuario_id = usuarioLogueado.id;
+}
 
     const tipo =
         document.getElementById(
@@ -375,27 +375,27 @@ const usuario_id = usuarioLogueado.id;
 
     const prestamo = {
 
-        libro_id: libro.id,
+    libro_id: libro.id,
 
-        usuario_id: usuario_id,
+    nombre_persona,
 
-        fecha_prestamo:
-            fechaPrestamo
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " "),
+    fecha_prestamo:
+    fechaPrestamo
+    .toISOString()
+    .slice(0,19)
+    .replace("T"," "),
 
-        fecha_devolucion:
-            fechaDevolucion
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " "),
+    fecha_devolucion:
+    fechaDevolucion
+    .toISOString()
+    .slice(0,19)
+    .replace("T"," "),
 
-        estado: "prestado",
+    estado:"prestado",
 
-        tipo: tipo
+    tipo
 
-    };
+};
 
     console.log(prestamo);
 
@@ -479,24 +479,177 @@ window.addEventListener("load", () => {
     ).textContent =
         "Autor: " + libro.autor;
 
-    const usuarioLogueado =
-        JSON.parse(
-            localStorage.getItem(
-                "usuario"
-            )
+});
+
+window.addEventListener("load", () => {
+
+    const select =
+        document.getElementById(
+            "tipoPrestamo"
         );
 
-    if (usuarioLogueado) {
+    if (!select) return;
 
-        document.getElementById(
-            "usuarioPrestamo"
-        ).textContent =
-            usuarioLogueado.usuario;
-    }
+    actualizarFecha();
+
+    select.addEventListener(
+        "change",
+        actualizarFecha
+    );
 
 });
 
-function logout() {
-    localStorage.removeItem("usuario");
-    window.location.href = "login.html";
+function actualizarFecha() {
+
+    const tipo =
+        document.getElementById(
+            "tipoPrestamo"
+        ).value;
+
+    let fecha =
+        new Date();
+
+    if (tipo === "premium") {
+
+        fecha.setDate(
+            fecha.getDate() + 30
+        );
+
+    } else {
+
+        fecha.setDate(
+            fecha.getDate() + 7
+        );
+
+    }
+
+    document.getElementById(
+        "fechaLimite"
+    ).innerText =
+        "Fecha límite de devolución: "
+        + fecha.toLocaleDateString();
+
+}
+
+async function cargarPrestamos(){
+
+    const res =
+        await fetch(
+            "http://localhost:3000/prestamos"
+        );
+
+    const prestamos =
+        await res.json();
+
+    const tabla =
+        document.getElementById(
+            "tablaPrestamos"
+        );
+
+    if(!tabla) return;
+
+    tabla.innerHTML="";
+
+    prestamos.forEach(p=>{
+
+        tabla.innerHTML += `
+
+        <tr>
+
+        <td>${p.titulo}</td>
+
+        <td>${p.nombre_persona}</td>
+
+        <td>
+        ${new Date(
+            p.fecha_prestamo
+        ).toLocaleDateString()}
+        </td>
+
+        <td>
+        ${new Date(
+            p.fecha_devolucion
+        ).toLocaleDateString()}
+        </td>
+
+        <td>${p.tipo}</td>
+
+        <td>
+
+        <button
+        class="btn btn-success"
+        onclick="devolverLibro(${p.libro_id})">
+
+        Devolver
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+async function devolverLibro(libroId){
+
+    const res =
+        await fetch(
+            `http://localhost:3000/prestamos/devolver/${libroId}`,
+            {
+                method:"PUT"
+            }
+        );
+
+    const data =
+        await res.json();
+
+    alert(
+        data.mensaje
+    );
+
+    cargarPrestamos();
+
+}
+
+function irADevoluciones() {
+
+    window.location.href =
+        "devolucion.html";
+
+}
+
+async function devolverLibro(libroId) {
+
+    if (!confirm("¿Confirmar devolución?")) {
+        return;
+    }
+
+    try {
+
+        const res = await fetch(
+            `http://localhost:3000/prestamos/devolver/${libroId}`,
+            {
+                method: "PUT"
+            }
+        );
+
+        const data = await res.json();
+
+        alert(data.mensaje);
+
+        // Volver a la página principal
+        window.location.href = "/Views/Index.html";
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert("Error al devolver libro");
+
+    }
+
 }
