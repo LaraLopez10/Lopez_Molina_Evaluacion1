@@ -1,3 +1,5 @@
+//BACKEND.JS
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -71,6 +73,11 @@ app.post(
     controller.crearPrestamo
 );
 
+app.put(
+    '/devoluciones/:id',
+    controller.devolverPrestamo
+);
+
 /* =========================
    VISTAS
 ========================= */
@@ -110,6 +117,28 @@ app.get('/prestamo', (req, res) => {
     );
 
 });
+
+app.get('/devolucion', (req, res) => {
+
+    res.sendFile(
+        path.join(
+            __dirname,
+ "/Views/devolucion.html"
+        )
+    );
+
+});
+
+
+app.get(
+    "/prestamos",
+    controller.getPrestamos
+);
+
+app.put(
+    '/prestamos/devolver/:libroId',
+    controller.devolverPrestamo
+);
 
 /* =========================
    SERVIDOR
