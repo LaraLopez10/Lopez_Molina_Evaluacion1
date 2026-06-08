@@ -1,4 +1,4 @@
-Te lo dejo listo para GitHub, prolijo, con jerarquía clara, títulos correctos y formato profesional en Markdown:
+
 
 ---
 
