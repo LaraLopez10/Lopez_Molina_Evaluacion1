@@ -246,9 +246,12 @@ async function login(event) {
         }
 
         localStorage.setItem(
-            "usuario",
-            data.usuario
-        );
+    "usuario",
+    JSON.stringify({
+        id: data.id,
+        usuario: data.usuario
+    })
+);
 
         window.location.href = "index.html";
 
@@ -330,19 +333,20 @@ async function confirmarPrestamo() {
         return;
     }
 
-    const usuario_id =
-        document.getElementById(
-            "usuario_id"
-        ).value;
+    const usuarioLogueado = JSON.parse(
+    localStorage.getItem("usuario")
+);
 
-    if (!usuario_id) {
+if (!usuarioLogueado) {
 
-        alert(
-            "Ingrese un ID de usuario"
-        );
+    alert("Debe iniciar sesión");
 
-        return;
-    }
+    window.location.href = "login.html";
+
+    return;
+}
+
+const usuario_id = usuarioLogueado.id;
 
     const tipo =
         document.getElementById(
@@ -475,4 +479,24 @@ window.addEventListener("load", () => {
     ).textContent =
         "Autor: " + libro.autor;
 
+    const usuarioLogueado =
+        JSON.parse(
+            localStorage.getItem(
+                "usuario"
+            )
+        );
+
+    if (usuarioLogueado) {
+
+        document.getElementById(
+            "usuarioPrestamo"
+        ).textContent =
+            usuarioLogueado.usuario;
+    }
+
 });
+
+function logout() {
+    localStorage.removeItem("usuario");
+    window.location.href = "login.html";
+}
