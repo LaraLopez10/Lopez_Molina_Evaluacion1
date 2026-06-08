@@ -1,166 +1,290 @@
+# Sistema Biblioteca MVP
 
+## Integrantes
 
-# 📚 Sistema Biblioteca MVP
-Proyecto desarrollado para la materia Programación.
-## 👥 Integrantes
-- Lara Lopez
-- Alexandra Molina
+* Lara López
+* Alexandra Molina
+
 ---
-# 📌 Descripción
-Sistema de gestión de biblioteca desarrollado bajo la arquitectura MVC.
-Permite:
-- Iniciar sesión
-- Registrar usuarios
-- Visualizar libros
-- Buscar libros por ID
-- Agregar libros
-- Modificar libros
-- Eliminar libros
-- Registrar préstamos
-- Actualizar stock automáticamente
-- Gestionar distintos tipos de préstamo
+
+# Descripción
+
+Sistema de gestión de biblioteca desarrollado con arquitectura MVC utilizando Node.js, Express y MySQL.
+
+El sistema permite administrar libros y préstamos de manera sencilla, registrando quién solicita cada libro, las fechas de préstamo y devolución, y controlando automáticamente el stock disponible.
+
 ---
-# 🏗 Arquitectura MVC
+
+# Funcionalidades
+
+## Gestión de Libros
+
+* Visualizar todos los libros disponibles.
+* Buscar libros por ID.
+* Agregar nuevos libros.
+* Modificar información de libros.
+* Eliminar libros.
+* Control automático de stock.
+
+## Gestión de Usuarios
+
+* Registro de usuarios administradores.
+* Inicio de sesión.
+
+## Gestión de Préstamos
+
+* Registrar préstamos de libros.
+* Registrar el nombre de la persona que recibe el préstamo.
+* Seleccionar tipo de préstamo.
+* Calcular automáticamente la fecha límite de devolución.
+* Descontar automáticamente una unidad del stock al realizar un préstamo.
+* Visualizar préstamos activos.
+* Registrar devoluciones.
+* Incrementar automáticamente el stock al devolver un libro.
+
+---
+
+# Arquitectura MVC
+
 El proyecto implementa el patrón MVC (Model - View - Controller).
+
 ## Model
-Encargado de la lógica de negocio y acceso a datos.
+
+Responsable de la lógica de negocio, acceso a datos y patrones de diseño.
+
 Componentes:
-- Base de datos MySQL
-- Strategy
-- Adapter
-- Singleton
+
+* Base de datos MySQL.
+* Singleton.
+* Strategy.
+* Adapter.
+
 ## View
-Interfaz de usuario desarrollada con:
-- HTML
-- CSS
-- Bootstrap
-- JavaScript
-Archivos:
-- login.html
-- Index.html
-- prestamo.html
+
+Interfaz desarrollada con:
+
+* HTML5
+* CSS3
+* Bootstrap 5
+* JavaScript
+
+Archivos principales:
+
+* login.html
+* Index.html
+* prestamo.html
+* devolucion.html
+
 ## Controller
-Intermediario entre la vista y el modelo.
-Archivo:
-- BibliotecaControllers.js
+
+Responsable de conectar la vista con el modelo.
+
+Archivo principal:
+
+* BibliotecaControllers.js
+
 ---
-# 🎯 Patrones de Diseño Implementados
+
+# Patrones de Diseño Implementados
+
 ## Singleton
-Archivo:
+
+### Archivo
+
 db.js
-Objetivo:
-Garantizar una única conexión a la base de datos MySQL durante toda la ejecución de la aplicación.
+
+### Objetivo
+
+Mantener una única conexión activa con la base de datos MySQL durante toda la ejecución del sistema.
+
 ---
+
 ## Strategy
-Archivos:
-- prestamoBasico.js
-- prestamoPremium.js
-Objetivo:
-Permitir cambiar dinámicamente la lógica de préstamo según el tipo seleccionado.
+
+### Archivos
+
+* prestamoBasico.js
+* prestamoPremium.js
+
+### Objetivo
+
+Permitir modificar el comportamiento del préstamo según el tipo seleccionado.
+
 ### Préstamo Básico
-- Duración: 7 días
+
+* Duración de 7 días.
+
 ### Préstamo Premium
-- Duración: 30 días
+
+* Duración de 30 días.
+
 ---
+
 ## Adapter
-Archivo:
+
+### Archivo
+
 adapterPrestamo.js
-Objetivo:
-Adaptar los datos del objeto Libro al formato requerido por el módulo de préstamos.
+
+### Objetivo
+
+Adaptar la información de los libros al formato requerido por el módulo de préstamos.
+
 ---
-# 🛠 Tecnologías Utilizadas
+
+# Tecnologías Utilizadas
+
 ## Backend
-- Node.js
-- Express
-- MySQL2
-- CORS
+
+* Node.js
+* Express
+* MySQL2
+* CORS
+
 ## Frontend
-- HTML5
-- CSS3
-- Bootstrap 5
-- JavaScript
+
+* HTML5
+* CSS3
+* Bootstrap 5
+* JavaScript
+
 ## Base de Datos
-- MySQL
-- XAMPP
+
+* MySQL
+* XAMPP
+
 ## Testing
-- Jest
+
+* Jest
+
 ---
-# 🗄 Base de Datos
-Nombre:
+
+# Base de Datos
+
+Nombre de la base de datos:
+
 biblioteca_mvp
-## Tabla Libros
-| Campo | Tipo |
-|---------|---------|
-| id | INT |
+
+## Tabla libros
+
+| Campo  | Tipo    |
+| ------ | ------- |
+| id     | INT     |
 | titulo | VARCHAR |
-| autor | VARCHAR |
-| stock | INT |
-## Tabla Usuarios
-| Campo | Tipo |
-|---------|---------|
-| id | INT |
-| usuario | VARCHAR |
+| autor  | VARCHAR |
+| stock  | INT     |
+
+## Tabla usuarios
+
+| Campo    | Tipo    |
+| -------- | ------- |
+| id       | INT     |
+| usuario  | VARCHAR |
 | password | VARCHAR |
-## Tabla Prestamos
-| Campo | Tipo |
-|---------|---------|
-| id | INT |
-| libro_id | INT |
-| usuario_id | INT |
-| fecha_prestamo | DATETIME |
+
+## Tabla prestamos
+
+| Campo            | Tipo     |
+| ---------------- | -------- |
+| id               | INT      |
+| libro_id         | INT      |
+| nombre_persona   | VARCHAR  |
+| fecha_prestamo   | DATETIME |
 | fecha_devolucion | DATETIME |
-| estado | VARCHAR |
-| tipo | VARCHAR |
+| estado           | VARCHAR  |
+| tipo             | VARCHAR  |
+
 ---
-# 🚀 Instalación
+
+# Flujo de Préstamos
+
+1. El administrador selecciona un libro.
+2. Ingresa el nombre de la persona que solicita el préstamo.
+3. Selecciona el tipo de préstamo.
+4. El sistema calcula automáticamente la fecha de devolución.
+5. Se registra el préstamo.
+6. El stock del libro disminuye en una unidad.
+7. El préstamo aparece en la pantalla de préstamos activos.
+8. Al devolver el libro:
+
+   * Se actualiza el estado a "devuelto".
+   * El stock aumenta en una unidad.
+   * El préstamo deja de aparecer en la lista de préstamos activos.
+
+---
+
+# Instalación
+
 ## 1. Clonar repositorio
+
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+```
 
-2. Instalar dependencias
+## 2. Instalar dependencias
 
+```bash
 npm install
+```
 
-3. Configurar base de datos
+Dependencias utilizadas:
+
+```bash
+npm install express
+npm install cors
+npm install mysql2
+npm install jest
+```
+
+## 3. Configurar la base de datos
 
 Crear la base:
 
+```sql
 CREATE DATABASE biblioteca_mvp;
+```
 
-Importar las tablas correspondientes.
+Crear las tablas correspondientes e importar los datos iniciales.
 
-4. Ejecutar servidor
+## 4. Ejecutar el servidor
 
+```bash
 node backend.js
+```
 
-⸻
+---
 
-🌐 Acceso
+# Acceso al Sistema
 
-Abrir en navegador:
+Abrir en el navegador:
 
+```text
 http://localhost:3000
+```
 
-⸻
+---
 
-🧪 Testing
+# Testing
 
-Para ejecutar las pruebas unitarias:
+Para ejecutar las pruebas:
 
+```bash
 npm test
+```
 
 Pruebas realizadas:
 
 * PrestamoBasico
 * PrestamoPremium
-* LibroAdapter
-* Validación de adaptación de objetos
+* AdapterPrestamo
+* Validación de lógica de préstamos
 
-⸻
+---
 
-📂 Estructura del Proyecto
+# Estructura del Proyecto
 
-Evaluacion1_Lopez_Molina
+```txt
+BibliotecaMVP
 │
 ├── backend.js
 ├── db.js
@@ -179,55 +303,36 @@ Evaluacion1_Lopez_Molina
 │   ├── login.html
 │   ├── Index.html
 │   ├── prestamo.html
+│   ├── devolucion.html
 │   ├── funciones.js
 │   └── style.css
 │
 └── test
     └── biblioteca.test.js
+```
 
-⸻
+---
 
-✅ Funcionalidades Implementadas
+# Funcionalidades Implementadas
 
-* Login
-* Registro
-* CRUD de libros
-* Préstamos
-* Actualización automática de stock
-* MVC
-* Singleton
-* Strategy
-* Adapter
-* Testing Unitario
+* Login de usuarios.
+* Registro de usuarios.
+* CRUD completo de libros.
+* Búsqueda por ID.
+* Gestión de préstamos.
+* Gestión de devoluciones.
+* Registro de persona que recibe el préstamo.
+* Cálculo automático de fecha de devolución.
+* Actualización automática de stock.
+* Visualización de préstamos activos.
+* Arquitectura MVC.
+* Patrón Singleton.
+* Patrón Strategy.
+* Patrón Adapter.
+* Testing unitario.
 
-⸻
+---
 
-📖 Conclusión
+# Conclusión
 
-El proyecto cumple con los requisitos solicitados para el MVP de Biblioteca, implementando arquitectura MVC, patrones de diseño, persistencia de datos en MySQL y pruebas unitarias para la validación de la lógica de negocio.
-
-# 📚 Fuentes / Recursos / Documentación
-## Documentación Oficial
-- https://nodejs.org/docs
-- https://expressjs.com
-- https://dev.mysql.com/doc
-- https://jestjs.io/docs/getting-started
-- https://getbootstrap.com/docs/5.3
-## Herramientas Utilizadas
-- Visual Studio Code
-- Node.js
-- MySQL
-- XAMPP
-- Git
-- GitHub
-## Recursos Consultados
-- Documentación oficial de Express
-- Documentación oficial de MySQL2
-- Documentación oficial de Jest
-- Bootstrap Documentation
-## Frameworks y Librerías
-- Express
-- MySQL2
-- Jest
-- Bootstrap
-
+El sistema Biblioteca MVP cumple con los requisitos propuestos para la gestión básica de una biblioteca. Implementa arquitectura MVC, patrones de diseño (Singleton, Strategy y Adapter), persistencia de datos mediante MySQL y pruebas unitarias para validar el correcto funcionamiento de la lógica de negocio.
