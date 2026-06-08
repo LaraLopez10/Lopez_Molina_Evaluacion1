@@ -25,19 +25,21 @@
 
                     <h4 class="mb-3">Iniciar Sesión</h4>
 
-                    <form onsubmit="irAlIndex(event)">
+                    <form onsubmit="login(event)">
 
                         <input
-                            type="text"
-                            class="form-control mb-3"
-                            placeholder="Usuario"
-                            required>
+                         type="text"
+                         id="usuario"
+                         class="form-control mb-3"
+                         placeholder="Usuario"
+                         required>
 
                         <input
-                            type="password"
-                            class="form-control mb-3"
-                            placeholder="Contraseña"
-                            required>
+                        type="password"
+                        id="password"
+                        class="form-control mb-3"
+                        placeholder="Contraseña"
+                        required>
 
                         <button
                             type="submit"
@@ -56,13 +58,6 @@
     </div>
 
 </div>
-
-<script>
-function irAlIndex(event) {
-    event.preventDefault();
-    window.location.href = "index.html";
-}
-</script>
-
+<script src="./funciones.js"></script>
 </body>
 </html>
